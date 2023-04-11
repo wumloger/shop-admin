@@ -53,7 +53,9 @@ import { useRouter } from 'vue-router'
 // import { useCookies } from '@vueuse/integrations/useCookies'
 import { toast } from '~/utils/toast'
 import { setToken } from '~/utils/auth'
+import { useAdmin } from '~/store'
 
+const { setStoreToken } = useAdmin()
 const loading = ref(false)
 
 const router = useRouter()
@@ -89,7 +91,7 @@ const onSubmit = () => {
                 if (res.code == 200) {
                     //将token存入cookie
                     setToken(res.data.token)
-
+                    setStoreToken(res.data.token)
                     toast('登录成功', 'success')
                     router.push('/')
                 } else {
