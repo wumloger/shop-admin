@@ -18,5 +18,9 @@ router.beforeEach((to, from, next) => {
         return next({ path: from.path ? from.path : '/' })
     }
 
+    //设置页面标题
+    let title = '商品管理后台-' + (to.meta.title ? to.meta.title : '')
+    document.title = title
+
     next()
 })
