@@ -34,7 +34,7 @@
                     </el-form-item>
 
                     <el-form-item>
-                        <el-button @click="onSubmit" type="primary" size="default"
+                        <el-button :loading="loading" @click="onSubmit" type="primary" size="default"
                             class="w-full py-4 bg-indigo-600 text-white rounded-full">登
                             录</el-button>
                     </el-form-item>
@@ -49,8 +49,12 @@
 import { reactive, ref } from 'vue'
 import { adminLogin } from '~/api/http'
 import { useRouter } from 'vue-router'
-import { ElNotification } from 'element-plus'
-import { useCookies } from '@vueuse/integrations/useCookies'
+// import { ElNotification } from 'element-plus'
+// import { useCookies } from '@vueuse/integrations/useCookies'
+import { toast } from '~/utils/toast'
+import { setToken } from '~/utils/auth'
+
+const loading = ref(false)
 
 const router = useRouter()
 
@@ -79,32 +83,24 @@ const onSubmit = () => {
         if (!valid) {
             return false;
         }
+        loading.value = true
         adminLogin(form.username, form.password)
             .then((res) => {
-                if (res.data.code == 200) {
+                if (res.code == 200) {
                     //将token存入cookie
-                    const cookie = useCookies()
-                    cookie.set('admin-token', res.data.data.token)
+                    setToken(res.data.token)
 
-                    ElNotification({
-                        message: '登录成功',
-                        type: 'success',
-                        duration: 2000
-                    })
+                    toast('登录成功', 'success')
                     router.push('/')
                 } else {
-                    ElNotification({
-                        message: '账号或密码错误',
-                        type: 'error',
-                        duration: 2000
-                    })
+
+                    toast('账号或密码错误', 'error')
                 }
             }).catch((err) => {
-                ElNotification({
-                    message: '请求失败',
-                    type: 'error',
-                    duration: 2000
-                })
+                console.log(err);
+                toast('请求失败', 'error')
+            }).finally(() => {
+                loading.value = false
             })
     })
 }
