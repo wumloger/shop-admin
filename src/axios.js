@@ -30,7 +30,8 @@ service.interceptors.response.use(
         //对于响应信息的处理
         toast('响应失败', 'error')
         return Promise.reject(error)
-    })
+    }
+)
 
 
 export default service

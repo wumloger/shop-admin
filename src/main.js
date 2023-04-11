@@ -7,6 +7,8 @@ import '../node_modules/element-plus/dist/index.css'
 import 'virtual:windi.css'
 import router from './router'
 
+import './permission'
+
 const app = createApp(App)
 
 app.use(elementPlus)
