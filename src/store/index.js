@@ -1,22 +1,29 @@
 import { defineStore } from "pinia";
-
-export const useAdmin = defineStore('admin', {
+import { adminLogin, getInfo, logout } from '~/api/admin'
+import { setToken, removeToken } from '~/composables/auth'
+export const useAdminStore = defineStore('admin', {
     state: () => ({
         token: '',
-        admin: {
-            id: 1,
-            role: 'admin',
-            nickname: '管理员',
-            avatar: ''
-        }
+        adminInfo: {},
     }),
     actions: {
-        setStoreToken(token) {
-            this.token = token
+        adminLogin(username, password) {
+            return new Promise((resolve, reject) => {
+                this.adminLogin(username, password).then((res) => {
+                    setToken(res.data.token)
+                    resolve(res)
+                }).catch(err => reject(err))
+            })
         },
-
-        changeAvatar(avatar) {
-            this.admin.avatar = avatar
+        async getInfo() {
+            const res = await getInfo()
+            console.log(res);
+            this.adminInfo = res.data
+        },
+        async adminLogout() {
+            logout()
+            removeToken()
+            this.adminInfo = {}
         }
     }
 })

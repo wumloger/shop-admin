@@ -1,23 +1,13 @@
 <template>
-    <div>
-        <h2>index</h2>
-        <p>{{ token }}</p>
-        <p>{{ admin.nickname }}</p>
-    </div>
+    <!-- <div class="p-3 flex space-x-5">
+        <h2>{{ adminInfo.username }}</h2>
+        <el-button type="primary" size="default" @click="handleLogout">退出登录</el-button>
+
+    </div> -->
+    <div>首页</div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useCookies } from "@vueuse/integrations/useCookies";
-import { storeToRefs } from 'pinia'
-import { useAdmin } from '~/store'
-
-const store = useAdmin()
-const { admin } = storeToRefs(store)
-console.log(admin);
-const cookie = useCookies()
-const token = ref(cookie.get('admin-token'))
-
 </script>
 
 <style lang="scss" scoped></style>

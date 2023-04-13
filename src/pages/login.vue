@@ -46,16 +46,16 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import { adminLogin } from '~/api/http'
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
+import { adminLogin } from '~/api/admin'
 import { useRouter } from 'vue-router'
 // import { ElNotification } from 'element-plus'
 // import { useCookies } from '@vueuse/integrations/useCookies'
-import { toast } from '~/utils/toast'
-import { setToken } from '~/utils/auth'
-import { useAdmin } from '~/store'
+import { toast } from '~/composables/util'
+import { setToken } from '~/composables/auth'
+import { useAdminStore } from '~/store'
 
-const { setStoreToken } = useAdmin()
+const { setStoreToken } = useAdminStore()
 const loading = ref(false)
 
 const router = useRouter()
@@ -91,7 +91,7 @@ const onSubmit = () => {
                 if (res.code == 200) {
                     //将token存入cookie
                     setToken(res.data.token)
-                    setStoreToken(res.data.token)
+
                     toast('登录成功', 'success')
                     router.push('/')
                 } else {
@@ -107,7 +107,18 @@ const onSubmit = () => {
     })
 }
 
+function onKeyUp(e) {
+    if (e.key == 'Enter') {
+        onSubmit()
+    }
+}
 
+onMounted(() => {
+    document.addEventListener("keyup", onKeyUp)
+})
+onBeforeUnmount(() => {
+    document.removeEventListener("keyup", onKeyUp)
+})
 </script>
 
 <style lang="scss" scoped></style>

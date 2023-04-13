@@ -1,8 +1,8 @@
 import axios from 'axios'
 // import { useCookies } from "@vueuse/integrations/useCookies";
 import { ElNotification } from 'element-plus'
-import { toast } from '~/utils/toast'
-import { getToken } from '~/utils/auth'
+import { toast } from '~/composables/util'
+import { getToken } from '~/composables/auth'
 
 const service = axios.create({
     baseURL: "http://127.0.0.1:4523/m1/2571711-0-default/api"
