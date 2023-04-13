@@ -34,7 +34,7 @@
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>修改密码</el-dropdown-item>
+                        <el-dropdown-item @click="rePassword">修改密码</el-dropdown-item>
                         <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
 
                     </el-dropdown-menu>
@@ -43,6 +43,26 @@
 
         </div>
     </div>
+
+
+
+    <el-drawer v-model="showDrawer" title="修改密码" size="30%" :close-on-click-modal="false">
+        <el-form label-width="80px">
+            <el-form-item label="旧密码">
+                <el-input placeholder="请输入旧密码"></el-input>
+            </el-form-item>
+            <el-form-item label="新密码">
+                <el-input type="password" show-password placeholder="请输入密码"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码">
+                <el-input type="password" show-password placeholder="请输入确认密码"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button class="bg-indigo-500 text-light-50 w-full p-4 rounded-full">提交</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-drawer>
 </template>
 
 <script setup>
@@ -55,6 +75,10 @@ import { useFullscreen } from '@vueuse/core'
 
 const { isFullscreen, toggle } = useFullscreen()
 
+const showDrawer = ref(false)
+const rePassword = () => {
+    showDrawer.value = true
+}
 
 const store = useAdminStore()
 const { adminInfo } = storeToRefs(store)
