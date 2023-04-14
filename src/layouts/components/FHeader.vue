@@ -47,18 +47,18 @@
 
 
     <el-drawer v-model="showDrawer" title="修改密码" size="30%" :close-on-click-modal="false">
-        <el-form label-width="80px">
-            <el-form-item label="旧密码">
-                <el-input placeholder="请输入旧密码"></el-input>
+        <el-form label-width="80px" :model="form" :rules="rules" ref="formRef">
+            <el-form-item label="旧密码" prop="oldpassword">
+                <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
             </el-form-item>
-            <el-form-item label="新密码">
-                <el-input type="password" show-password placeholder="请输入密码"></el-input>
+            <el-form-item label="新密码" prop="password">
+                <el-input type="password" v-model="form.password" show-password placeholder="请输入密码"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码">
-                <el-input type="password" show-password placeholder="请输入确认密码"></el-input>
+            <el-form-item label="确认密码" prop="repassword">
+                <el-input type="password" v-model="form.repassword" show-password placeholder="请输入确认密码"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="bg-indigo-500 text-light-50 w-full p-4 rounded-full">提交</el-button>
+                <el-button @click="onSubmit" class="bg-indigo-500 text-light-50 w-full p-4 rounded-full">提交</el-button>
             </el-form-item>
         </el-form>
 
@@ -66,12 +66,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAdminStore } from '~/store'
 import { showModal, toast } from '~/composables/util';
 import { useRouter } from 'vue-router';
 import { useFullscreen } from '@vueuse/core'
+import { updatepassword } from '~/api/admin'
+import { logout } from '../../api/admin';
 
 const { isFullscreen, toggle } = useFullscreen()
 
@@ -80,6 +82,41 @@ const rePassword = () => {
     showDrawer.value = true
 }
 
+const form = reactive({
+    oldpassword: "123456",
+    password: "admin",
+    repassword: "admin"
+})
+
+const rePassRule = (rule, value, callback) => {
+    if (value === '') {
+        callback(new Error('确认密码不能为空'))
+    } else if (value !== form.password) {
+        callback(new Error('确认密码必须和新密码一致'))
+    } else {
+        callback()
+    }
+}
+
+const rules = {
+    oldpassword: [{
+        required: true,
+        message: '旧密码不能为空',
+        trigger: 'blur'
+    }],
+    password: [{
+        required: true,
+        message: '新密码不能为空',
+        trigger: 'blur'
+    }],
+    repassword: [{
+        validator: rePassRule,
+        trigger: 'blur'
+    }]
+}
+
+const formRef = ref(null)
+const loading = ref(false)
 const store = useAdminStore()
 const { adminInfo } = storeToRefs(store)
 const { getInfo, adminLogout } = store
@@ -95,6 +132,30 @@ const handleLogout = () => {
     })
 }
 
+
+const onSubmit = () => {
+    formRef.value.validate((valid) => {
+        if (!valid) {
+            return false
+        }
+        loading.value = true
+        updatepassword(form)
+            .then((res) => {
+                console.log(res);
+                if (res.code == 200) {
+                    toast("修改密码成功,请重新登录")
+                    showDrawer.value = false
+                    adminLogout().then(() => {
+                        router.push('/login')
+                    })
+                } else {
+                    toast.push(res.msg, 'error')
+                }
+            }).finally(() => {
+                loading.value = false
+            })
+    })
+}
 </script>
 
 <style scoped>

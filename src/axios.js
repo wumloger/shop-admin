@@ -5,7 +5,7 @@ import { toast } from '~/composables/util'
 import { getToken } from '~/composables/auth'
 
 const service = axios.create({
-    baseURL: "http://127.0.0.1:4523/m1/2571711-0-default/api"
+    baseURL: "http://127.0.0.1:4523/m1/2571711-0-default"
 })
 //添加请求拦截
 service.interceptors.request.use(
