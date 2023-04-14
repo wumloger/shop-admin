@@ -4,8 +4,8 @@
             <!-- Header content -->
             <f-header></f-header>
         </el-header>
-        <el-container :direction="horizontal">
-            <el-aside>
+        <el-container>
+            <el-aside :style="{ width: sideWidth }">
                 <!-- Aside content -->
                 <f-menu></f-menu>
             </el-aside>
@@ -22,15 +22,15 @@
 import FHeader from './components/FHeader.vue';
 import FMenu from './components/FMenu.vue';
 import FTagList from './components/FTagList.vue';
+import { storeToRefs } from 'pinia';
+import { useAdminStore } from '~/store'
+const store = useAdminStore()
+const { sideWidth } = storeToRefs(store)
 
 </script>
 
 <style scoped>
-.el-aside {
-    @apply w-min
-}
-
 .el-main {
-    @apply w-full h-[65.3vw] bg-sky-300
+    @apply w-full h-[48.3vw] bg-sky-300;
 }
 </style>

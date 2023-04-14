@@ -1,49 +1,19 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useAdminStore } from '~/store'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 
 const store = useAdminStore()
-const { sideWidth } = storeToRefs(store)
-
+const { sideWidth, menus } = storeToRefs(store)
+console.log(menus);
 const router = useRouter()
 const route = useRoute()
 
 // 默认选中当前路由
 const defaultActive = ref(route.path)
 // 是否折叠
-const isCollapse = computed(() => (sideWidth == '200px'))
-
-const menus = reactive([
-  {
-    "name": "后台面板",
-    "icon": "Help",
-    "child": [
-      {
-        "name": "后台面板",
-        "icon": "HomeFilled",
-        "frontpath": "/"
-      },
-    ]
-  },
-  {
-    "name": "商城管理",
-    "icon": "ShoppingBag",
-    "child": [
-      {
-        "name": "商品管理",
-        "icon": "ShoppingCartFull",
-        "frontpath": "/goods/list"
-      },
-    ]
-  },
-  {
-    "name": "设置",
-    "icon": "Setting",
-    "frontpath": "/setting"
-  }
-])
+const isCollapse = computed(() => (sideWidth === '200px'))
 
 const handleSelect = (e) => {
   router.push(e)
@@ -62,13 +32,13 @@ const handleSelect = (e) => {
             <el-icon>
               <component :is="item.icon"></component>
             </el-icon>
-            <span v-if="sideWidth == '200px'">{{ item.name }}</span>
+            <span class="pl-4" v-if="sideWidth == '200px'">{{ item.name }}</span>
           </template>
           <el-menu-item v-for="(item2, index2) in item.child" :key="index2" :index="item2.frontpath">
             <el-icon>
               <component :is="item2.icon"></component>
             </el-icon>
-            <span v-if="sideWidth == '200px'">{{ item2.name }}</span>
+            <span class="pl-4" v-if="sideWidth == '200px'">{{ item2.name }}</span>
           </el-menu-item>
 
         </el-sub-menu>
@@ -77,7 +47,7 @@ const handleSelect = (e) => {
           <el-icon>
             <component :is="item.icon"></component>
           </el-icon>
-          <span v-if="sideWidth == '200px'">{{ item.name }}</span>
+          <span class="pl-4" v-if="sideWidth == '200px'">{{ item.name }}</span>
         </el-menu-item>
 
       </template>
@@ -87,10 +57,14 @@ const handleSelect = (e) => {
 
 <style scoped>
 .f-menu {
-  @apply fixed top-0 left-0 bottom-0 top-16 bg-blue-100 overflow-y-auto overflow-x-hidden transition-all duration-500;
+  @apply fixed top-0 left-0 bottom-0 top-16 overflow-y-auto overflow-x-hidden transition-all bg-sky-200;
 }
 
-.el-menu-item-active {
-  @apply text-sky-500 bg-sky-200
+.el-menu-item {
+  @apply bg-sky-100 border-solid border-b-sky-300 border-1;
+}
+
+.el-menu-item.is-active {
+  @apply text-sky-700 bg-sky-300;
 }
 </style>

@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
 import { adminLogin, getInfo, logout } from '~/api/admin'
 import { setToken, removeToken } from '~/composables/auth'
+import { router, addRoutes } from "~/router"
 export const useAdminStore = defineStore('admin', {
     state: () => ({
         token: '',
         adminInfo: {},
-        sideWidth: '200px'
+        sideWidth: '200px',
+        menus: []
     }),
     actions: {
         adminLogin(username, password) {
@@ -20,6 +22,9 @@ export const useAdminStore = defineStore('admin', {
             const res = await getInfo()
             console.log(res);
             this.adminInfo = res.data
+            this.menus = res.data.menus
+            return res;
+
         },
         async adminLogout() {
             logout()
