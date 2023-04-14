@@ -1,14 +1,15 @@
 <template>
     <div class="v-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0 h-16">
-        <div class="v-center text-xl w-48 ml-2">
+        <div class="f-center text-xl bg-blue-500 h-[100%] transition-all" :style="{ width: sideWidth }">
             <el-icon class="mr-1 text-3xl">
                 <ElementPlus></ElementPlus>
             </el-icon>
-            极客空间
+            <span v-if="sideWidth == '200px'">极客空间</span>
 
         </div>
-        <el-icon class="icon-btn">
-            <fold />
+        <el-icon class="icon-btn" @click="handleSideWidth">
+            <fold v-if="sideWidth == '200px'" />
+            <Expand v-else />
         </el-icon>
         <div class="v-center ml-auto">
             <el-icon class="icon-btn">
@@ -134,8 +135,8 @@ const rules = {
 const formRef = ref(null)
 const loading = ref(false)
 const store = useAdminStore()
-const { adminInfo } = storeToRefs(store)
-const { getInfo, adminLogout } = store
+const { adminInfo, sideWidth } = storeToRefs(store)
+const { getInfo, adminLogout, handleSideWidth } = store
 const router = useRouter()
 
 getInfo()
@@ -154,7 +155,8 @@ const onSubmit = () => {
         if (!valid) {
             return false
         }
-        loading.value = true
+        // loading.value = true
+        formDrawerRef.value.showLoading()
         updatepassword(form)
             .then((res) => {
                 console.log(res);
@@ -168,7 +170,7 @@ const onSubmit = () => {
                     toast(res.msg, 'error')
                 }
             }).finally(() => {
-                loading.value = false
+                formDrawerRef.value.hideLoading()
             })
     })
 }

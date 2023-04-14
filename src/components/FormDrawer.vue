@@ -6,7 +6,7 @@
                 <slot></slot>
             </div>
             <div class="actions">
-                <el-button type="primary" @click="submit">{{ confireText }}</el-button>
+                <el-button type="primary" @click="submit" :loading="loading">{{ confireText }}</el-button>
                 <el-button type="default" @click="close">取消</el-button>
             </div>
         </div>
@@ -44,10 +44,12 @@ const open = () => {
 const close = () => {
     showDrawer.value = false;
 }
-
+const loading = ref(false)
+const showLoading = () => loading.value = true
+const hideLoading = () => loading.value = false
 //向父组件暴露方法
 defineExpose({
-    open, close
+    open, close, showLoading, hideLoading
 })
 
 </script>

@@ -5,6 +5,7 @@ export const useAdminStore = defineStore('admin', {
     state: () => ({
         token: '',
         adminInfo: {},
+        sideWidth: '200px'
     }),
     actions: {
         adminLogin(username, password) {
@@ -24,6 +25,10 @@ export const useAdminStore = defineStore('admin', {
             logout()
             removeToken()
             this.adminInfo = {}
+        },
+        handleSideWidth() {
+            this.sideWidth = this.sideWidth === '200px' ? '80px' : '200px'
+            console.log(this.sideWidth);
         }
     }
 })
