@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row class="w-full h-screen">
-            <el-col :span="14" class="bg-indigo-500 flex justify-center items-center text-light-50 flex-col">
+            <el-col :span="14" class="bg-indigo-500 flex justify-center items-center text-light-50 flex-col bg-image">
                 <p class="text-5xl font-bold">shop admin</p>
                 <p class="text-3xl">Vue 3 和 Vite 的后台管理系统</p>
             </el-col>
@@ -121,4 +121,11 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.bg-image {
+    background-image: url('https://img1.baidu.com/it/u=3742409453,1965896937&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+}
+</style>

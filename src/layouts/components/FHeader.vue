@@ -46,7 +46,7 @@
 
 
 
-    <el-drawer v-model="showDrawer" title="修改密码" size="30%" :close-on-click-modal="false">
+    <!-- <el-drawer v-model="showDrawer" title="修改密码" size="30%" :close-on-click-modal="false">
         <el-form label-width="80px" :model="form" :rules="rules" ref="formRef">
             <el-form-item label="旧密码" prop="oldpassword">
                 <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
@@ -62,10 +62,25 @@
             </el-form-item>
         </el-form>
 
-    </el-drawer>
+    </el-drawer> -->
+
+    <FormDrawer ref="formDrawerRef" destroy-on-close @submit="onSubmit">
+        <el-form label-width="80px" :model="form" :rules="rules" ref="formRef">
+            <el-form-item label="旧密码" prop="oldpassword">
+                <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
+            </el-form-item>
+            <el-form-item label="新密码" prop="password">
+                <el-input type="password" v-model="form.password" show-password placeholder="请输入密码"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="repassword">
+                <el-input type="password" v-model="form.repassword" show-password placeholder="请输入确认密码"></el-input>
+            </el-form-item>
+        </el-form>
+    </FormDrawer>
 </template>
 
 <script setup>
+import FormDrawer from '../../components/FormDrawer.vue';
 import { ref, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAdminStore } from '~/store'
@@ -78,8 +93,9 @@ import { logout } from '../../api/admin';
 const { isFullscreen, toggle } = useFullscreen()
 
 const showDrawer = ref(false)
+const formDrawerRef = ref(null)
 const rePassword = () => {
-    showDrawer.value = true
+    formDrawerRef.value.open()
 }
 
 const form = reactive({
@@ -144,12 +160,12 @@ const onSubmit = () => {
                 console.log(res);
                 if (res.code == 200) {
                     toast("修改密码成功,请重新登录")
-                    showDrawer.value = false
+                    // showDrawer.value = false
                     adminLogout().then(() => {
                         router.push('/login')
                     })
                 } else {
-                    toast.push(res.msg, 'error')
+                    toast(res.msg, 'error')
                 }
             }).finally(() => {
                 loading.value = false
