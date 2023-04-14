@@ -27,7 +27,7 @@ export const useAdminStore = defineStore('admin', {
             this.adminInfo = {}
         },
         handleSideWidth() {
-            this.sideWidth = this.sideWidth === '200px' ? '80px' : '200px'
+            this.sideWidth = this.sideWidth === '200px' ? '60px' : '200px'
             console.log(this.sideWidth);
         }
     }

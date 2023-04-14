@@ -12,7 +12,7 @@
             <Expand v-else />
         </el-icon>
         <div class="v-center ml-auto">
-            <el-icon class="icon-btn">
+            <el-icon class="icon-btn" @click="$router.go(0)">
                 <Refresh />
             </el-icon>
             <el-icon class="icon-btn" @click="toggle">
@@ -45,27 +45,7 @@
         </div>
     </div>
 
-
-
-    <!-- <el-drawer v-model="showDrawer" title="修改密码" size="30%" :close-on-click-modal="false">
-        <el-form label-width="80px" :model="form" :rules="rules" ref="formRef">
-            <el-form-item label="旧密码" prop="oldpassword">
-                <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
-            </el-form-item>
-            <el-form-item label="新密码" prop="password">
-                <el-input type="password" v-model="form.password" show-password placeholder="请输入密码"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="repassword">
-                <el-input type="password" v-model="form.repassword" show-password placeholder="请输入确认密码"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button @click="onSubmit" class="bg-indigo-500 text-light-50 w-full p-4 rounded-full">提交</el-button>
-            </el-form-item>
-        </el-form>
-
-    </el-drawer> -->
-
-    <FormDrawer ref="formDrawerRef" destroy-on-close @submit="onSubmit">
+    <FormDrawer ref="formDrawerRef" destroy-on-close @submit="onSubmit" size="40%">
         <el-form label-width="80px" :model="form" :rules="rules" ref="formRef">
             <el-form-item label="旧密码" prop="oldpassword">
                 <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
@@ -82,74 +62,29 @@
 
 <script setup>
 import FormDrawer from '../../components/FormDrawer.vue';
-import { ref, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAdminStore } from '~/store'
-import { showModal, toast } from '~/composables/util';
+import { toast } from '~/composables/util';
 import { useRouter } from 'vue-router';
 import { useFullscreen } from '@vueuse/core'
 import { updatepassword } from '~/api/admin'
-import { logout } from '../../api/admin';
+import { useLogout, useRepassword } from '~/composables/useAdmin'
 
+const { handleLogout } = useLogout()
 const { isFullscreen, toggle } = useFullscreen()
-
-const showDrawer = ref(false)
-const formDrawerRef = ref(null)
-const rePassword = () => {
-    formDrawerRef.value.open()
-}
-
-const form = reactive({
-    oldpassword: "123456",
-    password: "admin",
-    repassword: "admin"
-})
-
-const rePassRule = (rule, value, callback) => {
-    if (value === '') {
-        callback(new Error('确认密码不能为空'))
-    } else if (value !== form.password) {
-        callback(new Error('确认密码必须和新密码一致'))
-    } else {
-        callback()
-    }
-}
-
-const rules = {
-    oldpassword: [{
-        required: true,
-        message: '旧密码不能为空',
-        trigger: 'blur'
-    }],
-    password: [{
-        required: true,
-        message: '新密码不能为空',
-        trigger: 'blur'
-    }],
-    repassword: [{
-        validator: rePassRule,
-        trigger: 'blur'
-    }]
-}
-
-const formRef = ref(null)
-const loading = ref(false)
 const store = useAdminStore()
 const { adminInfo, sideWidth } = storeToRefs(store)
 const { getInfo, adminLogout, handleSideWidth } = store
 const router = useRouter()
 
 getInfo()
+const { formRef, formDrawerRef, rules, form } = useRepassword()
 
-const handleLogout = () => {
-    showModal("是否要退出登录? ").then(() => {
-        adminLogout()
-        toast("退出登录成功")
-        router.push("/login")
-    })
+// const { rePassword,onSubmit } = useRepassword()
+
+const rePassword = () => {
+    formDrawerRef.value.open()
 }
-
-
 const onSubmit = () => {
     formRef.value.validate((valid) => {
         if (!valid) {
