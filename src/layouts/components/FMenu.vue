@@ -89,4 +89,8 @@ const handleSelect = (e) => {
 .f-menu {
   @apply fixed top-0 left-0 bottom-0 top-16 bg-blue-100 overflow-y-auto overflow-x-hidden transition-all duration-500;
 }
+
+.el-menu-item-active {
+  @apply text-sky-500 bg-sky-200
+}
 </style>

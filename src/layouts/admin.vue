@@ -5,11 +5,11 @@
             <f-header></f-header>
         </el-header>
         <el-container :direction="horizontal">
-            <el-aside width="200px">
+            <el-aside>
                 <!-- Aside content -->
                 <f-menu></f-menu>
             </el-aside>
-            <el-main height="">
+            <el-main>
                 <!-- Main content -->
                 <f-tag-list></f-tag-list>
                 <router-view></router-view>
@@ -25,4 +25,12 @@ import FTagList from './components/FTagList.vue';
 
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.el-aside {
+    @apply w-min
+}
+
+.el-main {
+    @apply w-full h-[65.3vw] bg-sky-300
+}
+</style>

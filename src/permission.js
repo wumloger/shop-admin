@@ -1,4 +1,4 @@
-import router from '~/router'
+import { router } from '~/router'
 import { getToken } from './composables/auth'
 import { toast, showFullLoading, hideFullLoading } from './composables/util'
 

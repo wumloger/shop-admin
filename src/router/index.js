@@ -11,23 +11,7 @@ const routes = [
         path: '/',
         name: 'index',
         component: Admin,
-        children: [
-            {
-                path: '/',
-                component: Index
-            },
-            {
-                path: '/goods/list',
-                component: GoodsList
-            },
-            {
-                path: '/setting',
-                component: setting
-            },
-        ],
-        meta: {
-            title: '后台首页'
-        }
+
     },
     {
         path: '/login',
@@ -44,9 +28,52 @@ const routes = [
     }
 ]
 
-const router = createRouter({
+const asyncRoutes = [
+
+    {
+        path: '/',
+        component: Index,
+        meta: {
+            title: '后台首页'
+        }
+    },
+    {
+        path: '/goods/list',
+        component: GoodsList,
+        meta: {
+            title: '商品管理'
+        }
+    },
+    {
+        path: '/setting',
+        component: setting
+    },
+
+]
+
+export const router = createRouter({
+    routes,
     history: createWebHashHistory(),
-    routes
+
 })
 
-export default router;
+
+// 动态添加路由的方法
+export function addRoutes(menus) {
+    // 是否有新的路由
+    let hasNewRoutes = false
+    const findAndAddRoutesByMenus = (arr) => {
+        arr.forEach(e => {
+            const item = asyncRoutes.find(obj => obj.path == e.frontpath)
+            if (item && router.hasRoute(item.path)) {
+                router.addRoute('admin', item)
+                hasNewRoutes = true
+            }
+            if (e.child && e.child.length > 0) {
+                findAndAddRoutesByMenus(e.child)
+            }
+        })
+    }
+    findAndAddRoutesByMenus(menus)
+    return hasNewRoutes
+}
