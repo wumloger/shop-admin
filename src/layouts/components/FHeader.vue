@@ -1,6 +1,6 @@
 <template>
-    <div class="v-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0 h-16">
-        <div class="f-center text-xl bg-blue-500 h-[100%] transition-all" :style="{ width: sideWidth }">
+    <div class="v-center bg-blue-500 text-light-50 fixed top-0 left-0 right-0 h-16">
+        <div class="f-center text-xl h-[100%] transition-all" :style="{ width: sideWidth }">
             <el-icon class="mr-1 text-3xl">
                 <ElementPlus></ElementPlus>
             </el-icon>

@@ -4,16 +4,27 @@ import About from '~/pages/about.vue'
 import NotFount from '~/pages/404.vue'
 import Login from '~/pages/login.vue'
 import Admin from '~/layouts/admin.vue'
-
+import GoodsList from '~/pages/goods/list.vue'
+import setting from '~/pages/setting.vue'
 const routes = [
     {
         path: '/',
         name: 'index',
         component: Admin,
-        children: [{
-            path: '/',
-            component: Index
-        }],
+        children: [
+            {
+                path: '/',
+                component: Index
+            },
+            {
+                path: '/goods/list',
+                component: GoodsList
+            },
+            {
+                path: '/setting',
+                component: setting
+            },
+        ],
         meta: {
             title: '后台首页'
         }
