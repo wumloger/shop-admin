@@ -78,37 +78,37 @@ const { getInfo, adminLogout, handleSideWidth } = store
 const router = useRouter()
 
 getInfo()
-const { formRef, formDrawerRef, rules, form } = useRepassword()
+const { formRef, formDrawerRef, rules, form, rePassword, onSubmit } = useRepassword()
 
 // const { rePassword,onSubmit } = useRepassword()
 
-const rePassword = () => {
-    formDrawerRef.value.open()
-}
-const onSubmit = () => {
-    formRef.value.validate((valid) => {
-        if (!valid) {
-            return false
-        }
-        // loading.value = true
-        formDrawerRef.value.showLoading()
-        updatepassword(form)
-            .then((res) => {
-                console.log(res);
-                if (res.code == 200) {
-                    toast("修改密码成功,请重新登录")
-                    // showDrawer.value = false
-                    adminLogout().then(() => {
-                        router.push('/login')
-                    })
-                } else {
-                    toast(res.msg, 'error')
-                }
-            }).finally(() => {
-                formDrawerRef.value.hideLoading()
-            })
-    })
-}
+// const rePassword = () => {
+//     formDrawerRef.value.open()
+// }
+// const onSubmit = () => {
+//     formRef.value.validate((valid) => {
+//         if (!valid) {
+//             return false
+//         }
+//         // loading.value = true
+//         formDrawerRef.value.showLoading()
+//         updatepassword(form)
+//             .then((res) => {
+//                 console.log(res);
+//                 if (res.code == 200) {
+//                     toast("修改密码成功,请重新登录")
+//                     // showDrawer.value = false
+//                     adminLogout().then(() => {
+//                         router.push('/login')
+//                     })
+//                 } else {
+//                     toast(res.msg, 'error')
+//                 }
+//             }).finally(() => {
+//                 formDrawerRef.value.hideLoading()
+//             })
+//     })
+// }
 </script>
 
 <style scoped>
