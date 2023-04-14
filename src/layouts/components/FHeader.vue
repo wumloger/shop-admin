@@ -64,51 +64,18 @@
 import FormDrawer from '../../components/FormDrawer.vue';
 import { storeToRefs } from 'pinia'
 import { useAdminStore } from '~/store'
-import { toast } from '~/composables/util';
-import { useRouter } from 'vue-router';
 import { useFullscreen } from '@vueuse/core'
-import { updatepassword } from '~/api/admin'
 import { useLogout, useRepassword } from '~/composables/useAdmin'
 
 const { handleLogout } = useLogout()
 const { isFullscreen, toggle } = useFullscreen()
 const store = useAdminStore()
 const { adminInfo, sideWidth } = storeToRefs(store)
-const { getInfo, adminLogout, handleSideWidth } = store
-const router = useRouter()
+const { getInfo, handleSideWidth } = store
 
-getInfo()
+// getInfo()
 const { formRef, formDrawerRef, rules, form, rePassword, onSubmit } = useRepassword()
 
-// const { rePassword,onSubmit } = useRepassword()
-
-// const rePassword = () => {
-//     formDrawerRef.value.open()
-// }
-// const onSubmit = () => {
-//     formRef.value.validate((valid) => {
-//         if (!valid) {
-//             return false
-//         }
-//         // loading.value = true
-//         formDrawerRef.value.showLoading()
-//         updatepassword(form)
-//             .then((res) => {
-//                 console.log(res);
-//                 if (res.code == 200) {
-//                     toast("修改密码成功,请重新登录")
-//                     // showDrawer.value = false
-//                     adminLogout().then(() => {
-//                         router.push('/login')
-//                     })
-//                 } else {
-//                     toast(res.msg, 'error')
-//                 }
-//             }).finally(() => {
-//                 formDrawerRef.value.hideLoading()
-//             })
-//     })
-// }
 </script>
 
 <style scoped>
